@@ -32,14 +32,16 @@ export default function App() {
     setPage(1);
   }
 
-  const { data, isLoading, error, isSuccess } = useQuery<MovieResponse, Error>({
+  const { data, isLoading, isError, isSuccess } = useQuery<
+    MovieResponse,
+    Error
+  >({
     queryKey: ['movies', topic, page],
     queryFn: () => fetchMovies(topic, page),
     enabled: topic.trim() !== '',
     retry: false,
     placeholderData: keepPreviousData,
   });
-  console.log(topic);
   function closeModal() {
     setSelectedMovie(null);
   }
@@ -52,7 +54,7 @@ export default function App() {
 
   useEffect(() => {
     toast.error('No films for u query');
-  }, [isSuccess && data.results]);
+  }, [isSuccess && data.results.length === 0]);
 
   return (
     <>
@@ -60,7 +62,7 @@ export default function App() {
       <SearchBar onSubmit={handleSearch} />
 
       {isLoading && <Loader />}
-      {error && <ErrorMessage />}
+      {isError && <ErrorMessage />}
       {isSuccess && totalPages > 1 && (
         <ReactPaginate
           pageCount={totalPages}
