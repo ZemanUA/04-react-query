@@ -1,7 +1,7 @@
 import css from './App.module.css';
 import SearchBar from '../SearchBar/SearchBar';
-import { useState } from 'react';
-import { Toaster } from 'react-hot-toast';
+import { useEffect, useState } from 'react';
+import { Toaster, toast } from 'react-hot-toast';
 import fetchMovies from '../../services/movieService';
 import { type Movie } from '../../types/movie';
 import MovieGrid from '../MovieGrid/MovieGrid';
@@ -49,6 +49,10 @@ export default function App() {
   }
 
   const totalPages = data?.total_pages ?? 0;
+
+  useEffect(() => {
+    toast.error('No films for u query');
+  }, [isSuccess && data.results]);
 
   return (
     <>
