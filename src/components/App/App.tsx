@@ -53,8 +53,10 @@ export default function App() {
   const totalPages = data?.total_pages ?? 0;
 
   useEffect(() => {
-    toast.error('No films for u query');
-  }, [isSuccess && data.results.length === 0]);
+    if (topic.trim() !== '' && (!data || data.results.length === 0)) {
+      toast.error('No films for u query');
+    }
+  }, [topic, data]);
 
   return (
     <>
